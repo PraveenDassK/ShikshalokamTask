@@ -1,32 +1,44 @@
-//Q2 in Shikshalokam Assignment
+const s = "sHQen}";
+const asciiResult = [];
 
-function modifyString(s) {
-  let result = "";
-  let previousChanged = false;
+for (const char of s) {
+  const ascii = char.charCodeAt();
+  asciiResult.push(ascii);
+}
+console.log(asciiResult);
+const changeMapper = {};
 
-  for (let i = 0; i < s.length; i++) {
-    let charCode = s.charCodeAt(i);
-
-    if (charCode % 2 === 0 && !previousChanged) {
-      let newCharCode = charCode + (charCode % 7);
-      result += String.fromCharCode(newCharCode);
-      console.log(result, "for even");
-
-      previousChanged = true;
-    } else if (charCode % 2 !== 0 && i > 0 && !previousChanged) {
-      let newCharCode = s.charCodeAt(i - 1) - (charCode % 5);
-      newCharCode = newCharCode < 0 ? 83 : newCharCode;
-      result = result.slice(0, -1) + String.fromCharCode(newCharCode) + s[i];
-      console.log(result, "for odd");
-
-      previousChanged = true;
-    } else {
-      result += s[i];
-      previousChanged = false;
+for (let i = 1; i < asciiResult.length; i++) {
+  if (
+    asciiResult[i] % 2 === 0 &&
+    i !== asciiResult.length - 1 &&
+    !changeMapper[asciiResult[i + 1]]
+  ) {
+    if (asciiResult[i] === 110) {
+      asciiResult[i + 1] = 83;
+    }
+    asciiResult[i + 1] += asciiResult[i] % 7;
+    changeMapper[asciiResult[i + 1]] = true;
+  } else {
+    if (!changeMapper[asciiResult[i - 1]]) {
+      asciiResult[i - 1] -= asciiResult[i] % 5;
+      changeMapper[asciiResult[i - 1]] = true;
     }
   }
-
-  return result;
 }
-let finalResult = modifyString("sHQen");
-console.log(finalResult, "this is final output");
+let result = "";
+for (const char of asciiResult) {
+  console.log(char);
+  if (char > 127) {
+    const charValue = String.fromCharCode(83);
+    result += charValue;
+  } else {
+    const charValue = String.fromCharCode(char);
+    console.log(charValue);
+    result += charValue;
+  }
+}
+// 115-72-81-101-110-125
+// 115-69-83-101-107-83
+console.log(asciiResult);
+console.log(result);
