@@ -3,8 +3,10 @@
 function modifyString(s) {
   let result = "";
   let previousChanged = false;
+
   for (let i = 0; i < s.length; i++) {
     let charCode = s.charCodeAt(i);
+
     if (charCode % 2 === 0 && !previousChanged) {
       let newCharCode = charCode + (charCode % 7);
       result += String.fromCharCode(newCharCode);
